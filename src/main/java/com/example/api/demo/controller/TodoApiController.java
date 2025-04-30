@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,7 +47,7 @@ public class TodoApiController {
 
     /**
      * 一覧
-     * 
+     *
      * @return TodoDataのリスト(json形式)
      */
     @GetMapping("/api/todo/list")
@@ -58,7 +59,7 @@ public class TodoApiController {
 
     /**
      * 選択
-     * 
+     *
      * @return TodoData(json形式)
      */
     @GetMapping("/api/todo/{id}")
@@ -74,7 +75,7 @@ public class TodoApiController {
 
     /**
      * id別選択例外
-     * 
+     *
      * @return
      */
     @GetMapping("/api/todo/")
@@ -87,7 +88,7 @@ public class TodoApiController {
      * トークン認証を実装したいので
      * 今回はユーザーネームを適当に指定したらトークンが返るように
      * トークンは有効期限付き
-     * 
+     *
      */
     @GetMapping("/api/token/generate/{username}")
     @ResponseBody
@@ -105,7 +106,7 @@ public class TodoApiController {
         tokenService.tokenSaveToDB(tokenObj);
 
         var tokenResponse = tokenService.createTokenResponse(tokenObj);
-        
+
         return tokenResponse;
     }
 
@@ -120,16 +121,16 @@ public class TodoApiController {
      * リクエストURL例:(Windowsのcurlはシングルクオートが使えない。そのうえエスケープ処理も必要)
      * curl -X POST -H "Content-Type:application/json" -d
      * "{\"todo_context\":\"バグを直す\",\"post_user_name\": \"Hello-san\"}"
-     * http://localhost:8080/api/todo/create
+     * http://localhost:8080/api/todo
      * TOKENがある場合(仮)
      * curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer
      * <TOKEN>" -d "{\"todo_context\":\"バグを直す\",\"post_user_name\": \"Hello-san\"}"
-     * http://localhost:8080/api/todo/create
-     * 
+     * http://localhost:8080/api/todo
+     *
      * @param entity
      * @return 処理完了レスポンスエンティティ(JSON)
      */
-    @PostMapping("api/todo/create")
+    @PostMapping("api/todo")
     @ResponseBody
     public TodoResponseBody create(@RequestBody @Validated TodoData entity, BindingResult result) {
 
@@ -141,18 +142,18 @@ public class TodoApiController {
         todoService.create(entity);
 
         var postResponse = requestHandler.createTodoResponseBody(HttpStatus.CREATED.value(), entity, "POST TODO");
-        
+
         return postResponse;
     }
 
     /**
      * 編集
-     * 
+     *
      * @param entity
      * @param result
      * @return
      */
-    @PostMapping("api/todo/update")
+    @PutMapping("api/todo")
     @ResponseBody
     public TodoResponseBody update(@RequestBody @Validated TodoData entity, BindingResult result) {
 
@@ -177,11 +178,11 @@ public class TodoApiController {
 
     /**
      * 削除
-     * 
+     *
      * @param id
      * @return 処理完了レスポンスエンティティ(JSON)
      */
-    @DeleteMapping("/api/todo/delete/{id}")
+    @DeleteMapping("/api/todo/{id}")
     public TodoResponseBody delete(@PathVariable("id") Integer id) {
 
         var resultById = todoService.select(id);

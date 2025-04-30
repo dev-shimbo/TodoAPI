@@ -19,22 +19,17 @@ public class ErrorResponseBody {
     private LocalDateTime exceptionOccurrenceTime;
 
     /* HTTP ERROR CODE */
-    @JsonProperty("status")
     private int status;
 
     /* Http エラーメッセージ */
-    @JsonProperty("error")
     private String error;
 
     /* 例外概要 */
-    @JsonProperty("message")
     private String message;
 
     /* リクエストURL */
-    @JsonProperty("path")
     private String path;
 
     /* エラー発生時間 */
-    @JsonProperty("error_detail")
     private String errorDetail;
 }

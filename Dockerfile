@@ -1,4 +1,4 @@
-#  Java 実行環境JRE Java 開発環境 JDK 
+#  Java 実行環境JRE Java 開発環境 JDK
 # ベースイメージを指定します
 FROM eclipse-temurin:17-jdk-jammy AS builder
 # ワーキングディレクトリを設定します
